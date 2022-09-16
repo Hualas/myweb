@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+  nginx: # services name (unique)
+    image: nginx:alpine
+    container_name: nginx
+    restart: always
+    volumes:
+      - ./myweb:/usr/share/nginx/html
+    networks:
+      proxy:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.nginx-secure.entrypoints=websecure"
+      - "traefik.http.routers.nginx.rule=Host(`yoclaros.com`)"
+networks:
+  proxy:
+    name: core_proxy
+    driver: bridge
